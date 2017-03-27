@@ -110,8 +110,10 @@ Setting permissions on the collection
 
 ::
 
-    ichmod write rg-matthew-hartley /jic_archive/rg-matthew-hartley
+    ichmod own rg-matthew-hartley /jic_archive/rg-matthew-hartley
     ichmod inherit /jic_archive/rg-matthew-hartley
+
+Note: We use own so that group members can share things by adding other users/groups using ``ichmod``.
 
 Adding users to the group
 ~~~~~~~~~~~~~~~~~~~~~~~~~
