@@ -25,7 +25,7 @@ To create a group run the command below.
 
     irods-groupadd rg-matthew-hartley 5497558138880
 
-The command above does three things:
+The command above does a number of things:
 
 1. It creates the group ``rg-matthew-hartley`` in the zone
 2. It sets the group quota to 5Tb
