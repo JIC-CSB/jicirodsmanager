@@ -15,6 +15,7 @@ To add a user to an iRODS zone install this software on the zone VM and run the 
 If the group (``rg-matthew-hartley``) does not exist an appropriate error message will appear.
 
 ::
+
     The group rg-matthew-hartley does not exit.
     Please create it first using the irods-groupadd command.
 
