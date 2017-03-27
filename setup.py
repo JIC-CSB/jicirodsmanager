@@ -3,7 +3,7 @@ from setuptools import setup
 url = ""
 version = "0.1.0"
 readme = open('README.rst').read()
-dsc = "Python tools to manage users/groups/quotas/namespaces in an irods zone",
+dsc = "Python tools to manage users/groups/quotas/namespaces in an iRODS zone",
 
 setup(name="jicirodsmanager",
       packages=["jicirodsmanager"],
