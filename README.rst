@@ -60,3 +60,74 @@ To install the jicirodsmanager package.
 
     cd jicirodsmanager
     python setup.py install
+
+Implementation details
+----------------------
+
+On the zone server, become the iRODS user:
+
+::
+
+    su irods
+
+Making the group
+~~~~~~~~~~~~~~~~
+
+::
+
+    iadmin mkgroup rg-matthew-hartley
+
+Repetition gives an error:
+
+::
+
+    bash-4.2$ iadmin mkgroup rg-matthew-hartley
+    remote addresses: 127.0.0.1 ERROR: rcGeneralAdmin failed with error -809000 CATALOG_ALREADY_HAS_ITEM_BY_THAT_NAME
+    Level 0: Error -809000 CATALOG_ALREADY_HAS_ITEM_BY_THAT_NAME
+    Level 1: DEBUG:
+
+    bash-4.2$ echo $?
+    4
+
+Making the collection
+~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    imkdir /jic_archive/rg-matthew-hartley
+
+Again, repetition gives an error:
+
+::
+
+    bash-4.2$ imkdir /jic_archive/rg-matthew-hartley
+    remote addresses: 127.0.0.1 ERROR: mkdirUtil: mkColl of /jic_archive/rg-matthew-hartley error. status = -809000 CATALOG_ALREADY_HAS_ITEM_BY_THAT_NAME
+    bash-4.2$ echo $?
+    3
+
+Setting permissions on the collection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    ichmod write rg-matthew-hartley /jic_archive/rg-matthew-hartley
+    ichmod inherit /jic_archive/rg-matthew-hartley
+
+Adding users to the group
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    iadmin atg rg-matthew-hartley olssont#nbi
+    iadmin atg rg-matthew-hartley hartleym#nbi
+
+Repeatedly adding the same user causes an error:
+
+::
+
+    bash-4.2$     iadmin atg rg-matthew-hartley olssont#nbi
+    remote addresses: 127.0.0.1 ERROR: rcGeneralAdmin failed with error -809000 CATALOG_ALREADY_HAS_ITEM_BY_THAT_NAME
+    bash-4.2$ echo $?
+    4
+
+
