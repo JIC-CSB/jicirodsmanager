@@ -16,7 +16,7 @@ If the group (``rg-matthew-hartley``) does not exist an appropriate error messag
 
 ::
 
-    The group rg-matthew-hartley does not exit.
+    The group rg-matthew-hartley does not exist.
     Please create it first using the irods-groupadd command.
 
 To create a group run the command below.
