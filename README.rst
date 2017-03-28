@@ -132,4 +132,13 @@ Repeatedly adding the same user causes an error:
     bash-4.2$ echo $?
     4
 
+Brainstorming
+-------------
+
+We'll have a StorageManager base class that provides some public functions that are used by the CLI. That way,
+the CLI is easily reusable. The public functions will include:
+
+1. Group exists
+2. Add user
+3. Add group (with an optional argument for specifying group quota, iRODS implementation will always use this).
 
