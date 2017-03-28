@@ -1,6 +1,51 @@
 """jicirodsmanager package."""
 
+from subprocess import Popen, PIPE
+
 __version__ = "0.1.0"
+
+
+class CommandWrapper(object):
+    """Class for creating API calls from command line tools."""
+
+# Class variable and methods that need to be overridden by subclasses.
+
+    def process_stdout(self):
+        """Return the desired output of the wrapped command line tool."""
+        return self.stdout
+
+    def process_stderr(self):
+        """Return a useful error message."""
+        return self.stderr
+
+    def success(self):
+        """Return True if the command line tool was run successfully."""
+        if self.returncode == 0:
+            return True
+        else:
+            return False
+
+# Useful helper functions
+
+    def _call_cmd_line(self, args):
+        """Run the command line tool."""
+        try:
+            p = Popen(args, stdout=PIPE, stderr=PIPE)
+        except OSError:
+            raise(RuntimeError("No such command found in PATH"))
+
+        self.stdout, self.stderr = p.communicate()
+        self.returncode = p.returncode
+
+# Interface API.
+
+    def __call__(self, args):
+        """Return wrapped stdout or raise if stderr is not empty."""
+        self._call_cmd_line(args)
+        if self.success():
+            return self.process_stdout()
+        else:
+            raise(RuntimeError(self.process_stderr()))
 
 
 class StorageManager(object):
