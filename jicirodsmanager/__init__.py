@@ -1,6 +1,7 @@
 """jicirodsmanager package."""
 
 import logging
+import sys
 from subprocess import Popen, PIPE
 
 __version__ = "0.1.0"
@@ -38,7 +39,8 @@ class CommandWrapper(object):
         if self.success():
             return self.stdout
         else:
-            raise(RuntimeError(self.stderr))
+            print(self.stderr)
+            sys.exit(self.returncode)
 
 
 class StorageManager(object):
