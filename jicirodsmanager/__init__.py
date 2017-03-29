@@ -17,10 +17,10 @@ class CommandWrapper(object):
 
 # Useful helper functions
 
-    def _call_cmd_line(self, args):
+    def _call_cmd_line(self):
         """Run the command line tool."""
         try:
-            p = Popen(args, stdout=PIPE, stderr=PIPE)
+            p = Popen(self.args, stdout=PIPE, stderr=PIPE)
         except OSError:
             raise(RuntimeError("No such command found in PATH"))
 
@@ -31,7 +31,7 @@ class CommandWrapper(object):
 
     def __call__(self):
         """Return wrapped stdout or raise if stderr is not empty."""
-        self._call_cmd_line(self.args)
+        self._call_cmd_line()
         if self.success():
             return self.stdout
         else:
