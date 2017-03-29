@@ -19,12 +19,13 @@ def test_cmd_when_successful():
     cmd = CommandWrapper()
 
     # Mock stuff.
+    cmd.cmd = ["ls"]
     cmd.success = MagicMock(return_value=True)
     cmd.process_stdout = MagicMock()
     cmd.process_stderr = MagicMock()
 
     # Run stuff.
-    cmd(["ls"])
+    cmd()
 
     # Assert stuff.
     cmd.success.assert_called_once_with()
@@ -37,6 +38,7 @@ def test_cmd_when_not_successful():
     cmd = CommandWrapper()
 
     # Mock stuff.
+    cmd.cmd = ["ls"]
     cmd.success = MagicMock(return_value=False)
     cmd.process_stdout = MagicMock()
     cmd.process_stderr = MagicMock()
@@ -44,7 +46,7 @@ def test_cmd_when_not_successful():
     # Run stuff. Here we need to catch and ignore the RuntimeError
     # generated as a consequence of cmd.success() returning False.
     try:
-        cmd(["ls"])
+        cmd()
     except RuntimeError:
         pass
 
@@ -57,7 +59,8 @@ def test_cmd_when_not_successful():
 def test_cmd_raises_when_invoked_with_command_not_in_path():
     from jicirodsmanager import CommandWrapper
     cmd = CommandWrapper()
+    cmd.cmd = ["rubbish"]
 
     # Run stuff.
     with pytest.raises(RuntimeError):
-        cmd(["rubbish"])
+        cmd()

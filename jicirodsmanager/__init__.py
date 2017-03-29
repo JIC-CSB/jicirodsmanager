@@ -10,6 +10,8 @@ class CommandWrapper(object):
 
 # Class variable and methods that need to be overridden by subclasses.
 
+    cmd = []
+
     def process_stdout(self):
         """Return the desired output of the wrapped command line tool."""
         return self.stdout()
@@ -51,11 +53,11 @@ class CommandWrapper(object):
 
 # Interface API.
 
-    def __call__(self, args):
+    def __call__(self, *args, **kwargs):
         """Return wrapped stdout or raise if stderr is not empty."""
-        self._call_cmd_line(args)
+        self._call_cmd_line(self.cmd)
         if self.success():
-            return self.process_stdout()
+            return self.process_stdout(*args, **kwargs)
         else:
             raise(RuntimeError(self.process_stderr()))
 
