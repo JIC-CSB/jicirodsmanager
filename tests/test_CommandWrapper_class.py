@@ -27,8 +27,8 @@ def test_cmd_when_successful():
     cmd(["ls"])
 
     # Assert stuff.
-    cmd.success.assert_called_once()
-    cmd.process_stdout.assert_called_once()
+    cmd.success.assert_called_once_with()
+    cmd.process_stdout.assert_called_once_with()
     cmd.process_stderr.assert_not_called()
 
 
@@ -49,9 +49,9 @@ def test_cmd_when_not_successful():
         pass
 
     # Assert stuff.
-    cmd.success.assert_called_once()
+    cmd.success.assert_called_once_with()
     cmd.process_stdout.assert_not_called()
-    cmd.process_stderr.assert_called_once()
+    cmd.process_stderr.assert_called_once_with()
 
 
 def test_cmd_raises_when_invoked_with_command_not_in_path():

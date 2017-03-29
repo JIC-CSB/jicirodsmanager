@@ -32,7 +32,8 @@ def test_add_user():
     # Assert stuff.
     storage_manager.group_exists.assert_called_once_with("rg-matthew-hartley")
     storage_manager.create_user.assert_called_once_with("olssont")
-    storage_manager.add_user_to_group.assert_called_once_with("olssont", "rg-matthew-hartley")
+    storage_manager.add_user_to_group.assert_called_once_with(
+        "olssont", "rg-matthew-hartley")
 
 
 def test_add_user_when_group_does_not_exist():
@@ -83,7 +84,8 @@ def test_add_group_no_quota():
     storage_manager.add_group("rg-matthew-hartley")
 
     # Assert stuff.
-    storage_manager.create_group_without_quota.assert_called_once_with("rg-matthew-hartley")
+    storage_manager.create_group_without_quota.assert_called_once_with(
+        "rg-matthew-hartley")
     storage_manager.create_group_with_quota.assert_not_called()
 
 
@@ -100,4 +102,5 @@ def test_add_group_with_quota():
 
     # Assert stuff.
     storage_manager.create_group_without_quota.assert_not_called()
-    storage_manager.create_group_with_quota.assert_called_once_with("rg-matthew-hartley", 500)
+    storage_manager.create_group_with_quota.assert_called_once_with(
+        "rg-matthew-hartley", 500)
