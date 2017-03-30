@@ -5,9 +5,11 @@ BINPATH=`dirname $MYPATH`
 PACKAGEPATH=`dirname $BINPATH`
 export PYTHONPATH=$PYTHONPATH:$PACKAGEPATH
 
+CMD="python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@"
+
 if [ `whoami` == "irods" ]
 then
-        python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@
+        $CMD
 else
-        su irods -c "python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@"
+        su irods -c "$CMD"
 fi

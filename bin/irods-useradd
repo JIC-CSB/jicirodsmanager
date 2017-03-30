@@ -11,5 +11,5 @@ if [ `whoami` == "irods" ]
 then
         $CMD
 else
-        su irods -c $CMD
+        su irods -c "$CMD"
 fi
