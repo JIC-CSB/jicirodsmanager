@@ -132,6 +132,16 @@ Repeatedly adding the same user causes an error:
     bash-4.2$ echo $?
     4
 
+Useful notes
+------------
+
+To get the iRODS zone name:
+
+::
+
+    irods_envfile = os.path.expanduser('~/.irods/irods_environment.json')
+    irods_zone_name = json.load(open(irods_envfile))['irods_zone_name']
+
 Brainstorming
 -------------
 
