@@ -36,7 +36,7 @@ class CommandWrapper(object):
 
 # Interface API.
 
-    def __call__(self):
+    def __call__(self, exit_on_failure=True):
         """Return wrapped stdout or raise if stderr is not empty."""
         self._call_cmd_line()
         if self.success():
@@ -45,7 +45,9 @@ class CommandWrapper(object):
             logger.warning("Command failed: {}".format(self.args))
             logger.warning(self.stderr)
             sys.stderr.write(self.stderr)
-            sys.exit(self.returncode)
+
+            if exit_on_failure:
+                sys.exit(self.returncode)
 
 
 class StorageManager(object):
@@ -82,9 +84,10 @@ class StorageManager(object):
             return
 
         # At this point the group should exist.
-        # If we manage to create the user we add it to the group.
-        if self.create_user(user_name):
-            self.add_user_to_group(user_name, group_name)
+        self.create_user(user_name, exit_on_failure=False)
+        # The previous command might have failed if the user exists
+        # We'll try adding them anyway
+        self.add_user_to_group(user_name, group_name)
 
     def add_group(self, group_name, quota=None):
         """Add the group to the storage system."""

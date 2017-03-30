@@ -107,7 +107,7 @@ class IrodsStorageManager(StorageManager):
         """Create the user and return True if successful."""
         logger.info("Calling create_user")
         mkuser = CommandWrapper(
-            ["iadmin", "mkuser", nbi_zone_user_name(user_name)])
+            ["iadmin", "mkuser", nbi_zone_user_name(user_name), "rodsuser"])
         mkuser()
         return mkuser.success()
 
