@@ -67,7 +67,7 @@ class StorageManager(object):
         """Add the group and set quota."""
 
     def create_user(self, user_name):
-        """Create the user and return True if successful."""
+        """Create the user."""
 
     def add_user_to_group(self, user_name, group_name):
         """Create the user."""
@@ -84,7 +84,7 @@ class StorageManager(object):
             return
 
         # At this point the group should exist.
-        self.create_user(user_name, exit_on_failure=False)
+        self.create_user(user_name)
         # The previous command might have failed if the user exists
         # We'll try adding them anyway
         self.add_user_to_group(user_name, group_name)

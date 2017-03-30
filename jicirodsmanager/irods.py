@@ -104,12 +104,11 @@ class IrodsStorageManager(StorageManager):
             sgq()
 
     def create_user(self, user_name):
-        """Create the user and return True if successful."""
+        """Create the user. Do not exit if command fails."""
         logger.info("Calling create_user")
         mkuser = CommandWrapper(
             ["iadmin", "mkuser", nbi_zone_user_name(user_name), "rodsuser"])
-        mkuser()
-        return mkuser.success()
+        mkuser(exit_on_failure=False)
 
     def add_user_to_group(self, user_name, group_name):
         """Add the user to the group."""
