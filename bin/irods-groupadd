@@ -1,14 +1,13 @@
 #!/bin/bash
 
-PREVUSER=`whoami`
-
-if [ "$PREVUSER" != "irods" ]
-then
-    su irods
-fi
-
 MYPATH=`realpath $0`
 BINPATH=`dirname $MYPATH`
 PACKAGEPATH=`dirname $BINPATH`
 export PYTHONPATH=$PYTHONPATH:$PACKAGEPATH
-python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@
+
+if [ `whoami` == "irods" ]
+then
+        python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@
+else
+        su irods -c "python $PACKAGEPATH/jicirodsmanager/cli.py addgroup $@"
+fi
