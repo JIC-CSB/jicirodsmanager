@@ -1,8 +1,11 @@
 """Module for storing irods specific code."""
 
 import os
+import sys
 import json
+import base64
 import logging
+import requests
 
 from jicirodsmanager import StorageManager, CommandWrapper
 
@@ -16,6 +19,26 @@ def string_to_list(s):
     :returns: list of items
     """
     return s.strip().split()
+
+
+def get_research_groups():
+
+    consul_url = "http://consul.scicomp.jic.ac.uk/v1/kv/research-groups"
+
+    response = requests.get(consul_url)
+
+    encoded_group_string = json.loads(response.content)[0]['Value']
+
+    group_list_string = base64.b64decode(encoded_group_string)
+
+    group_list = json.loads(group_list_string)
+
+    return [s.lower() for s in group_list]
+
+
+def is_valid_research_group(group_name):
+
+    return group_name in get_research_groups()
 
 
 def irods_zone_collection_name(group_name):
@@ -48,6 +71,13 @@ class IrodsStorageManager(StorageManager):
     def create_group_without_quota(self, group_name):
         """Add the group without setting a quota."""
         logger.info("Calling create_group_without_quota")
+
+        if not is_valid_research_group(group_name):
+            err = "Group {} does not exist in consul.".format(group_name)
+            logger.warning(err)
+            sys.stderr.write(err + '\n')
+            sys.exit(2)
+
         mkgroup = CommandWrapper(["iadmin", "mkgroup", group_name])
         mkgroup()
         if mkgroup.returncode == 0:
