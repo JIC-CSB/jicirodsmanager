@@ -1,5 +1,7 @@
 """Module for storing irods specific code."""
 
+import os
+import json
 import logging
 
 from jicirodsmanager import StorageManager, CommandWrapper
@@ -16,8 +18,18 @@ def string_to_list(s):
     return s.strip().split()
 
 
+def irods_zone_collection_name(group_name):
+    """Return iRODS collection name derived from group_name including working
+    out the iRODS zone."""
+
+    irods_envfile = os.path.expanduser('~/.irods/irods_environment.json')
+    irods_zone_name = json.load(open(irods_envfile))['irods_zone_name']
+
+    return "/{}/{}".format(irods_zone_name, group_name)
+
+
 def nbi_zone_user_name(user_name):
-    "Return nbi zone user name."""
+    """Return nbi zone user name."""
     return "{}#nbi".format(user_name)
 
 
@@ -39,7 +51,7 @@ class IrodsStorageManager(StorageManager):
         mkgroup = CommandWrapper(["iadmin", "mkgroup", group_name])
         mkgroup()
         if mkgroup.returncode == 0:
-            collection = "/{}".format(group_name)
+            collection = irods_zone_collection_name(group_name)
             imkdir = CommandWrapper(
                 ["imkdir", collection])
             imkdir()
