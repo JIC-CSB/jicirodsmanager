@@ -4,4 +4,12 @@ MYPATH=`realpath $0`
 BINPATH=`dirname $MYPATH`
 PACKAGEPATH=`dirname $BINPATH`
 export PYTHONPATH=$PYTHONPATH:$PACKAGEPATH
-python $PACKAGEPATH/jicirodsmanager/cli.py adduser $@
+
+CMD="python $PACKAGEPATH/jicirodsmanager/cli.py adduser $@"
+
+if [ `whoami` == "irods" ]
+then
+        $CMD
+else
+        su irods -c $CMD
+fi
