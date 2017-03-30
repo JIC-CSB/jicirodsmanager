@@ -1,5 +1,12 @@
 #!/bin/bash
 
+PREVUSER=`whoami`
+
+if [ "$PREVUSER" != "irods" ]
+then
+    su irods
+fi
+
 MYPATH=`realpath $0`
 BINPATH=`dirname $MYPATH`
 PACKAGEPATH=`dirname $BINPATH`
