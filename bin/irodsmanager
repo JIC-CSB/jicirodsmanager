@@ -1,0 +1,7 @@
+#!/bin/bash
+
+MYPATH=`realpath $0`
+BINPATH=`dirname $MYPATH`
+PACKAGEPATH=`dirname $BINPATH`
+export PYTHONPATH=$PYTHONPATH:$PACKAGEPATH
+python $PACKAGEPATH/jicirodsmanager/cli.py $@
