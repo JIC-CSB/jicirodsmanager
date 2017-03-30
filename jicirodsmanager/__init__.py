@@ -24,6 +24,7 @@ class CommandWrapper(object):
     def _call_cmd_line(self):
         """Run the command line tool."""
         try:
+            logging.info("Calling Popen with: {}".format(self.args))
             p = Popen(self.args, stdout=PIPE, stderr=PIPE)
         except OSError:
             raise(RuntimeError("No such command found in PATH"))
