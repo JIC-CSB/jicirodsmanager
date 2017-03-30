@@ -29,6 +29,8 @@ class CommandWrapper(object):
             raise(RuntimeError("No such command found in PATH"))
 
         self.stdout, self.stderr = p.communicate()
+        self.stdout = self.stdout.decode("utf-8")
+        self.stderr = self.stderr.decode("utf-8")
         self.returncode = p.returncode
 
 # Interface API.
@@ -39,7 +41,9 @@ class CommandWrapper(object):
         if self.success():
             return self.stdout
         else:
-            print(self.stderr)
+            logger.warning("Command failed: {}".format(self.args))
+            logger.warning(self.stderr)
+            sys.stderr.write(self.stderr)
             sys.exit(self.returncode)
 
 

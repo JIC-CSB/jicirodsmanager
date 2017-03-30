@@ -41,7 +41,7 @@ def test_cmd_when_not_successful():
         cmd()
 
 
-def test_cmd_raises_when_invoked_with_command_not_in_path():
+def test_cmd_sysexits_when_invoked_with_command_not_in_path():
     from jicirodsmanager import CommandWrapper
     cmd = CommandWrapper(["rubbish"])
 

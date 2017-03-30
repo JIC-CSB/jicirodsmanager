@@ -50,7 +50,7 @@ class IrodsStorageManager(StorageManager):
                 ichmod_inherit = CommandWrapper(
                     ["ichmod", "inherit", collection])
                 ichmod_inherit()
-        return mkgroup.returncode == 0
+        return mkgroup.success()
 
     def create_group_with_quota(self, group_name, quota):
         """Add the group and set quota."""
@@ -67,7 +67,7 @@ class IrodsStorageManager(StorageManager):
         mkuser = CommandWrapper(
             ["iadmin", "mkuser", nbi_zone_user_name(user_name)])
         mkuser()
-        return mkuser.returncode == 0
+        return mkuser.success()
 
     def add_user_to_group(self, user_name, group_name):
         """Add the user to the group."""
