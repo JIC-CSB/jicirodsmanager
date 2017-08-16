@@ -100,7 +100,7 @@ class IrodsStorageManager(StorageManager):
         created = self.create_group_without_quota(group_name)
         if created:
             sgq = CommandWrapper(
-                ["iadmin", "sgq, group_name", "total", quota])
+                ["iadmin", "sgq", group_name, "total", quota])
             sgq()
 
     def create_user(self, user_name):
