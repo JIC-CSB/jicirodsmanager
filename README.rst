@@ -56,6 +56,9 @@ The command above does a number of things:
 4. It gives the ``rg-matthew-hartley`` group ownership permissions on the
    ``/rg-matthew-hartley`` collection
 
+*Warning:* at the moment the quota functionality in iRODS does not appear to be
+doing anything.
+
 Once the group exists one can add users that belong to that group to the zone.
 
 ::
