@@ -9,6 +9,10 @@ the implementation details may be of interest to other iRODS users that want to
 organise iRODS zones into research groups where members are allowed to write
 data.
 
+This project was inspired by the implementation provided by Ton Smeele and
+Chirs Smeele at the Utrecht University
+`irods-ruleset-uu <https://github.com/UtrechtUniversity/irods-ruleset-uu>`_.
+
 
 Overview
 --------
