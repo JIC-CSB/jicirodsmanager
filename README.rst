@@ -1,18 +1,41 @@
 JIC iRODS manager
 =================
 
-Python tools to manage users/groups/quotas/namespaces in an iRODS zone.
+Python tools to manage users/groups/quotas/namespaces in the iRODS zones.
+
+These tools have been implemented to solve the specific problem of managing
+users and groups in iRODS at the John Innes Centre. Although it is JIC specific
+the implementation details may be of interest to other iRODS users that want to
+organise iRODS zones into research groups where members are allowed to write
+data.
+
+
+Overview
+--------
+
+Below is an overview of what the structure that this tool is meant to support
+
+- Individual users do not have home directories (this has to be explicitly
+  disabled during the setup of the iRODS zone)
+- Each research group has a named collection
+- Each research group owns its collection
+
+Th latter enables the members of the group to share their data with other users
+in the zone without having to involve a systems administrator.
+
 
 Usage
 -----
 
-To add a user to an iRODS zone install this software on the zone VM and run the command below.
+To add a user to an iRODS zone install this software on the zone VM and run the
+command below.
 
 ::
 
     irods-useradd olssont rg-matthew-hartley
 
-If the group (``rg-matthew-hartley``) does not exist an appropriate error message will appear.
+If the group (``rg-matthew-hartley``) does not exist an appropriate error
+message will appear.
 
 ::
 
@@ -30,7 +53,7 @@ The command above does a number of things:
 1. It creates the group ``rg-matthew-hartley`` in the zone
 2. It sets the group quota to 5Tb
 3. It creates the collection ``/rg-matthew-hartley`` 
-4. It gives the ``rg-matthew-hartley`` group permissions to write to the
+4. It gives the ``rg-matthew-hartley`` group ownership permissions on the
    ``/rg-matthew-hartley`` collection
 
 Once the group exists one can add users that belong to that group to the zone.
@@ -44,25 +67,68 @@ The command above does two things.
 1. It creates the user ``olssont``
 2. It adds the user ``olssont`` to the ``rg-matthew-hartley`` group
 
-Outstanding questions
-~~~~~~~~~~~~~~~~~~~~~
-
-- Should it be possible to create groups without a quota?
-- Should it be possible to add users without a group?
-- Should it be possible to add a user to a second group?
-
 
 Installation
 ------------
-To install the jicirodsmanager package.
+
+To install the jicirodsmanager package log into the iRODS zone server and clone this
+repository in /opt, e.g.
 
 ::
 
-    cd jicirodsmanager
-    python setup.py install
+    ssh root@jic-datazone.irods.nbi.ac.uk
+    cd /opt
+    git clone https://github.com/JIC-CSB/jicirodsmanager.git
 
-Implementation details
-----------------------
+The ``irods-useradd`` and ``irods-groupadd`` commands will then be available from the
+``/opt/jicirodsmanager/bin`` directory.
+
+
+Technical details
+-----------------
+
+The logic for managing users and groups resides in the base class
+``jicirodsmanager.StorageManager`` and is subclassed by
+``jicirodsmanager.irods.IrodsStorageManager`` which provides a specific
+implementation for iRODS.
+
+The specific iRODS implementation shells out commands using the
+``jicirodsmanager.CommandWrapper`` class. This is used for logging
+the commands that get shelled out and to catch errors from the
+issued commands.
+
+The scripts in the ``bin`` directory make use of the ``jicirodsmanager/cli.py``
+script. In order to make this work from any location it needs to add the cloned
+``jicirodsmanager`` repository to the ``PYTHONPATH`` environment variable. This
+is achieved using the shim below::
+
+    MYPATH=`realpath $0`
+    BINPATH=`dirname $MYPATH`
+    PACKAGEPATH=`dirname $BINPATH`
+    export PYTHONPATH=$PYTHONPATH:$PACKAGEPATH
+
+The command is then built up, for example in ``bin/irods-useradd`` this takes
+the form of the below::
+
+    CMD="python $PACKAGEPATH/jicirodsmanager/cli.py adduser $@"
+
+When issuing iRODS commands one needs to be logged in as the ``irods``
+user on the iRODS zone. However, one does not always SSH into the
+server as the irods user and it can be a pain to have to remember to
+become the iRODS user before making use of this tool. The ``irods-useradd``
+and ``irods-groupadd`` bash scripts in the ``bin`` directory take care
+of this using the shim below::
+
+    if [ `whoami` == "irods" ]
+    then
+            $CMD
+    else
+            su irods -c "$CMD"
+    fi
+
+
+Notes from experiments on the command line
+------------------------------------------
 
 On the zone server, become the iRODS user:
 
@@ -132,23 +198,12 @@ Repeatedly adding the same user causes an error:
     bash-4.2$ echo $?
     4
 
-Useful notes
-------------
+Finding the zone name programatically
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To get the iRODS zone name:
+To get the iRODS zone name using Python:
 
 ::
 
     irods_envfile = os.path.expanduser('~/.irods/irods_environment.json')
     irods_zone_name = json.load(open(irods_envfile))['irods_zone_name']
-
-Brainstorming
--------------
-
-We'll have a StorageManager base class that provides some public functions that are used by the CLI. That way,
-the CLI is easily reusable. The public functions will include:
-
-1. Group exists
-2. Add user
-3. Add group (with an optional argument for specifying group quota, iRODS implementation will always use this).
-
