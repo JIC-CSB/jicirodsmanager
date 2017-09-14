@@ -7,7 +7,9 @@ These tools have been implemented to solve the specific problem of managing
 users and groups in iRODS at the John Innes Centre. Although it is JIC specific
 the implementation details may be of interest to other iRODS users that want to
 organise iRODS zones into research groups where members are allowed to write
-data.
+data. More detail on the motivation can be found in
+`iRODS user, group and namespace management blog post
+<http://blog.scicomp.jic.ac.uk/posts/irods-user-group-and-namespace-management>`_.
 
 This project was inspired by the implementation provided by Ton Smeele and
 Chirs Smeele at the Utrecht University
