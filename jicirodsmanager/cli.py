@@ -54,7 +54,7 @@ def main():
     group = subparsers.add_parser("addproject")
     group.add_argument("project_name")
     group.add_argument("-q", "--quota", type=int, default=None)
-    group.set_defaults(func=addgroup)
+    group.set_defaults(func=addproject)
 
     args = parser.parse_args()
 
