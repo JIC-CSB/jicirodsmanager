@@ -31,3 +31,10 @@ Security
 ^^^^^^^^
 
 
+[1.0.0]
+------------
+
+Initial release with two commands:
+
+- irods-useradd
+- irods-groupadd
