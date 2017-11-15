@@ -8,7 +8,9 @@ from jicirodsmanager.irods import IrodsStorageManager
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 handler = logging.StreamHandler()
 handler.setFormatter(formatter)
@@ -22,10 +24,18 @@ def adduser(args):
     storage_manager = IrodsStorageManager()
     storage_manager.add_user(args.user_name, args.group_name)
 
+
 def addgroup(args):
     root.info("Calling addgroup")
     storage_manager = IrodsStorageManager()
     storage_manager.add_group(args.group_name, args.quota)
+
+
+def addproject(args):
+    root.info("Calling addproject")
+    storage_manager = IrodsStorageManager()
+    storage_manager.add_project(args.project_name, args.quota)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -38,6 +48,11 @@ def main():
 
     group = subparsers.add_parser("addgroup")
     group.add_argument("group_name")
+    group.add_argument("-q", "--quota", type=int, default=None)
+    group.set_defaults(func=addgroup)
+
+    group = subparsers.add_parser("addproject")
+    group.add_argument("project_name")
     group.add_argument("-q", "--quota", type=int, default=None)
     group.set_defaults(func=addgroup)
 

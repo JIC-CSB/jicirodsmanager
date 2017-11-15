@@ -103,6 +103,35 @@ class IrodsStorageManager(StorageManager):
                 ["iadmin", "sgq", group_name, "total", quota])
             sgq()
 
+    def create_project_without_quota(self, project_name):
+        """Add the project without setting a quota."""
+        logger.info("Calling create_project_without_quota")
+
+        mkgroup = CommandWrapper(["iadmin", "mkgroup", project_name])
+        mkgroup()
+        if mkgroup.returncode == 0:
+            collection = irods_zone_collection_name(project_name)
+            imkdir = CommandWrapper(
+                ["imkdir", collection])
+            imkdir()
+            if imkdir.returncode == 0:
+                ichmod_own = CommandWrapper(
+                    ["ichmod", "own", project_name, collection])
+                ichmod_own()
+                ichmod_inherit = CommandWrapper(
+                    ["ichmod", "inherit", collection])
+                ichmod_inherit()
+        return mkgroup.success()
+
+    def create_project_with_quota(self, project_name, quota):
+        """Add the project and set quota."""
+        logger.info("Calling create_project_with_quota")
+        created = self.create_project_without_quota(project_name)
+        if created:
+            sgq = CommandWrapper(
+                ["iadmin", "sgq", project_name, "total", quota])
+            sgq()
+
     def create_user(self, user_name):
         """Create the user. Do not exit if command fails."""
         logger.info("Calling create_user")

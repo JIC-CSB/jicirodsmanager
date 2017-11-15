@@ -66,6 +66,12 @@ class StorageManager(object):
     def create_group_with_quota(self, group_name, quota):
         """Add the group and set quota."""
 
+    def create_project_without_quota(self, project_name):
+        """Add the project without setting a quota."""
+
+    def create_project_with_quota(self, project_name, quota):
+        """Add the project and set quota."""
+
     def create_user(self, user_name):
         """Create the user."""
 
@@ -94,3 +100,9 @@ class StorageManager(object):
         if quota is None:
             return self.create_group_without_quota(group_name)
         return self.create_group_with_quota(group_name, quota)
+
+    def add_project(self, project_name, quota=None):
+        """Add the project to the storage system."""
+        if quota is None:
+            return self.create_project_without_quota(project_name)
+        return self.create_project_with_quota(project_name, quota)
