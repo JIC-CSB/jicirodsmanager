@@ -61,6 +61,10 @@ class IrodsStorageManager(StorageManager):
 
     command_prefix = "irods"
 
+    def __call__(self):
+        if not self.group_exists("reporting"):
+            sys.exit("You need to create a group named 'reporting' in iRODS")
+
     def group_exists(self, group_name):
         """Return true if the group exists."""
         logger.info("Calling group exists")
