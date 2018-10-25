@@ -1,7 +1,7 @@
 from setuptools import setup
 
 url = "https://github.com/JIC-CSB/jicirodsmanager"
-version = "1.1.0"
+version = "1.2.0"
 readme = open('README.rst').read()
 dsc = "Python tools to manage users/groups/quotas/namespaces in an iRODS zone",
 
