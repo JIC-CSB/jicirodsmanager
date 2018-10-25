@@ -30,6 +30,14 @@ Fixed
 Security
 ^^^^^^^^
 
+[1.2.0]
+------------
+
+Added
+^^^^^
+
+- Automatic addition of read permissions for irods group named reporting
+
 [1.1.0]
 ------------
 
