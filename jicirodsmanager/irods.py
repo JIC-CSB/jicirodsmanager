@@ -96,6 +96,9 @@ class IrodsStorageManager(StorageManager):
                 ichmod_inherit = CommandWrapper(
                     ["ichmod", "inherit", collection])
                 ichmod_inherit()
+                ichmod_read = CommandWrapper(
+                    ["ichmod", "read", "reporting", collection])
+                ichmod_read()
         return mkgroup.success()
 
     def create_group_with_quota(self, group_name, quota):
@@ -125,6 +128,9 @@ class IrodsStorageManager(StorageManager):
                 ichmod_inherit = CommandWrapper(
                     ["ichmod", "inherit", collection])
                 ichmod_inherit()
+                ichmod_read = CommandWrapper(
+                    ["ichmod", "read", "reporting", collection])
+                ichmod_read()
         return mkgroup.success()
 
     def create_project_with_quota(self, project_name, quota):
