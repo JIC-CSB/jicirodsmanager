@@ -42,7 +42,7 @@ def give_read_access_to_collection(args):
     storage_manager = IrodsStorageManager()
     storage_manager.give_read_access_to_collection(
         args.user_name,
-        args.collection_path
+        args.collection
     )
 
 
@@ -68,7 +68,7 @@ def main():
 
     grant_access = subparsers.add_parser("give_read_access_to_collection")
     grant_access.add_argument("user_name")
-    grant_access.add_argument("collection_path")
+    grant_access.add_argument("collection")
     grant_access.set_defaults(func=give_read_access_to_collection)
 
     args = parser.parse_args()
