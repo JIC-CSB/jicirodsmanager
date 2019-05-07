@@ -160,5 +160,5 @@ class IrodsStorageManager(StorageManager):
         """Give user read permissions on collection."""
         logger.info("Calling give_read_access_to_collection")
         give_read_access = CommandWrapper(
-            ["ichmod", "read", user, collection])
+            ["ichmod", "read", user_name, collection])
         give_read_access()
