@@ -159,6 +159,7 @@ class IrodsStorageManager(StorageManager):
     def give_read_access_to_collection(self, user_name, collection):
         """Give user read permissions on collection."""
         logger.info("Calling give_read_access_to_collection")
+        user_name = nbi_zone_user_name(user_name)
         give_read_access = CommandWrapper(
-            ["ichmod", "read", user_name, collection])
+            ["ichmod", "-r", "read", user_name, collection])
         give_read_access()
