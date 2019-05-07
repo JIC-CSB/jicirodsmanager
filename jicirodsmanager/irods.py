@@ -155,3 +155,7 @@ class IrodsStorageManager(StorageManager):
         atg = CommandWrapper(
             ["iadmin", "atg", group_name, nbi_zone_user_name(user_name)])
         atg()
+
+    def give_read_access_to_collection(self, user_name, collection_path):
+        """Give user read permissions on collection."""
+        logger.info("Calling give_read_access_to_collection")

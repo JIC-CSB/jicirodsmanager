@@ -37,6 +37,13 @@ def addproject(args):
     storage_manager.add_project(args.project_name, args.quota)
 
 
+def give_read_access_to_collection(args):
+    root.info("Calling give_read_access_to_collection")
+    storage_manager = IrodsStorageManager()
+    storage_manager.give(args.user_name, args.collection_path)
+
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers()
@@ -55,6 +62,11 @@ def main():
     group.add_argument("project_name")
     group.add_argument("-q", "--quota", type=int, default=None)
     group.set_defaults(func=addproject)
+
+    grant_access = subparsers.add_parser("give_read_access_to_collection")
+    grant_access.add_argument("user_name")
+    grant_access.add_argument("collection_path")
+    grant_access.set_defaults(func=give_read_access_to_collection)
 
     args = parser.parse_args()
 
