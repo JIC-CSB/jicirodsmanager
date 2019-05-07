@@ -40,7 +40,10 @@ def addproject(args):
 def give_read_access_to_collection(args):
     root.info("Calling give_read_access_to_collection")
     storage_manager = IrodsStorageManager()
-    storage_manager.give(args.user_name, args.collection_path)
+    storage_manager.give_read_access_to_collection(
+        args.user_name,
+        args.collection_path
+    )
 
 
 
